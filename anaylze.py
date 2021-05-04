@@ -1,3 +1,4 @@
+from sklearn.metrics import mean_squared_error
 import pandas as pd
 from datetime import datetime
 import matplotlib as mpl
@@ -5,11 +6,14 @@ import matplotlib.pyplot as plt
 from pandas.plotting import autocorrelation_plot
 from pandas import DataFrame
 from statsmodels.tsa.arima.model import ARIMA
+from math import sqrt
 
+
+# Pull data from CSV
 df = pd.read_csv("/Users/saif/Downloads/GOOGL.csv", index_col=0, parse_dates=True)
 # df["Date"] = df.apply(lambda x: datetime.strptime(x["Date"][0:7], "%d%b%y"), axis=1)
 
-# Autocorrelation
+# Autocorrelation: serial correlation  between elements and others separated by a given interval.
 
 autocorrelation_plot(df.High)
 # plt.legend()
@@ -38,10 +42,39 @@ residuals.plot(kind='kde')
 print(residuals.describe())
 # Note: the mean is very close to 0 and therefore there is not much bias in the residuals.
 
-'''
-plt.plot(df.index, df.High, color='#000000', linestyle='-', label='OG')
-plt.plot(df.index, df.rm7, color='#010101', linestyle='-', label='Weekly Rolling Mean')
-plt.plot(df.index, df.rm31, color='#010101', linestyle='-', label='Monthly Rolling Mean')
-plt.plot(df.index, df.rs7, color='#110011', linestyle='-', label='Weekly Rolling SD')
-plt.plot(df.index, df.rs31, color='#000000', linestyle='-', label='Monthly Rolling SD')
-'''
+
+
+
+
+# Forecasting Function
+
+# Splitting data into test and train set
+
+X = df.High.values
+size = int(len(X) * 0.66)
+train, test = X[0:size], X[size:len(X)]
+history = [x for x in train]
+predictions = list()
+
+# Walk-forward validation
+
+for t in range(len(test)):
+    model = ARIMA(history, order=(5, 1, 0))
+    model_fit = model.fit()
+    output = model_fit.forecast()
+    yhat = output[0]
+    predictions.append(yhat)
+    obs = test[t]
+    history.append(obs)
+    print('predicted=%f, expected=%f' % (yhat, obs))
+
+# Evaluate forecasts
+
+rmse = sqrt(mean_squared_error(test, predictions))
+print('Test RMSE: %.3f' % rmse)
+
+# Plot forecasts against actual outcomes
+
+plt.plot(test)
+plt.plot(predictions, color='red')
+plt.show()
