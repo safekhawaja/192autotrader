@@ -8,6 +8,9 @@
 Llama is a `autotrader` that analyzes data, computes a live ARIMA model and uses Alpaca to execute live trades. 
 
 This is built by Saif Khawaja and Aashish Jain for CIS 192.
+![Video Explanation](https://www.loom.com/share/f0282bcff9b64c3a8f2c484c084efd5a)
+
+
 
 ## Prerequisites
 
