@@ -1,9 +1,11 @@
+# First Party
 import json
 import os
 from math import sqrt
-
-import pandas as pd
 import requests
+
+# Third Party
+import pandas as pd
 from statsmodels.tsa.arima.model import ARIMA
 from pandas import DataFrame
 from sklearn.metrics import mean_squared_error

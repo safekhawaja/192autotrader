@@ -5,7 +5,7 @@
 ![GitHub stars](https://img.shields.io/github/stars/safekhawaja/192autotrader)
 ![Twitter Follow](https://img.shields.io/twitter/url?style=social&url=https%3A%2F%2Ftwitter.com%2Fsaifkhawaja3)
 
-Llama is a `autotrader` that analyzes data and computes an ARIMA model. 
+Llama is a `autotrader` that analyzes data, computes a live ARIMA model and uses Alpaca to execute live trades. 
 
 This is built by Saif Khawaja and Aashish Jain for CIS 192.
 
